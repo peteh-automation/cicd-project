@@ -44,7 +44,9 @@ jobs:
           name: Build front-end
           command: |
             # Your code here
-            exit 1
+            npm i
+            npm run lint             
+            # exit 1
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
@@ -233,6 +235,7 @@ jobs:
       # Docker image here that supports AWS CLI
     steps:
       # Checkout code from git
+      checkout
       - run:
           name: Install dependencies
           command: |
@@ -243,25 +246,24 @@ jobs:
             # your code here
       # Here's where you will add some code to rollback on failure  
 
-cleanup:
-    docker:
-      # Docker image here
-    steps:
-      # Checkout code from git
-      - run:
-          name: Get old stack workflow id
-          command: |
-            # your code here
-            export OldWorkflowID="the id here"
-            export STACKS=[] #put the list of stacks here
-      - run:
-          name: Remove old stacks and files
-          command: |
-            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
-            then
+  cleanup:
+      docker:
+        # Docker image here
+      steps:
+        # Checkout code from git
+        - run:
+            name: Get old stack workflow id
+            command: |
               # your code here
-            fi
-            
+              export OldWorkflowID="the id here"
+              export STACKS=[] #put the list of stacks here
+        - run:
+            name: Remove old stacks and files
+            command: |
+              if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
+              then
+                # your code here
+              fi
 
 workflows:
   default:
