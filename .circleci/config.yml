@@ -12,8 +12,8 @@ jobs:
           name: Build front-end
           command: |
             # Your code here
-            npm i
             cd frontend
+            npm i
             npm run lint
             # exit 1
       - save_cache:
