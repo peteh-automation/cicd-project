@@ -12,8 +12,8 @@ commands:
           when: on_fail
           command: |
             echo ${ID}
-            aws cloudformation delete-stack --stack-name "udapeople-backend-${ID}"
-            aws cloudformation delete-stack --stack-name "udapeople-frontend-${ID}"
+            aws cloudformation delete-stack --stack-name udapeople-backend-${ID}
+            aws cloudformation delete-stack --stack-name udapeople-frontend-${ID}
 
 jobs:
   build-frontend:
@@ -161,7 +161,7 @@ jobs:
 #          at: .circleci/ansible/
       # Rollback on failure
       - destroy-environment:
-          ID: "${CIRCLE_WORKFLOW_ID:0:7}"   
+          ID: ${CIRCLE_WORKFLOW_ID:0:7}
 
   # configure-infrastructure:
   #   docker:
