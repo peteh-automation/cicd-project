@@ -105,12 +105,6 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - run: yum install -y tar gzip
-#      - run:
-#          name: Record Existing Infrastructure ID
-#          command: |
-#            aws cloudformation list-exports \
-#              --query "Exports[?Name==\`ID\`].Value" \
-#              --no-paginate --output text >> ~/oldPipelineId.txt
       - checkout
       - run:
           name: Ensure back-end infrastructure exists
@@ -121,15 +115,17 @@ jobs:
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
-          name: Store Backend URL
+          name: Store Backend IP
           command: |
-            BACKEND_DNS=$(aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicDnsName' \
+            aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --output text)
-            echo "BACKEND_DNS: ${BACKEND_DNS}"
+              --output text > ~/backendIP.txt
+      - persist_to_workspace:
+          root: ~/
+          paths: [backendIP.txt]
       - run:
-          name: Ensure front-end infrastructure exist
+          name: Ensure frontend infrastructure exist
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
@@ -137,9 +133,10 @@ jobs:
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
-          name: Add back-end ip to ansible inventory
+          name: Add backend IP to ansible inventory
           command: |
-            # Your code here
+            pwd
+            ls
             exit 1
       - persist_to_workspace:
           root: ~/
