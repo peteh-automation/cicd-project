@@ -12,8 +12,8 @@ commands:
           when: on_fail
           command: |
             echo ${ID}
-            aws cloudformation delete-stack --stack-name udapeople-backend-${ID}
-            aws cloudformation delete-stack --stack-name udapeople-frontend-${ID}
+            aws cloudformation delete-stack --stack-name udapeople-backend-<<parameters.ID>>
+            aws cloudformation delete-stack --stack-name udapeople-frontend-<<parameters.ID>>
 
 jobs:
   build-frontend:
