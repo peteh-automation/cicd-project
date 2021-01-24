@@ -104,7 +104,7 @@ jobs:
     docker:
       - image: amazon/aws-cli
     steps:
-       - run: yum install -y tar gzip
+      - run: yum install -y tar gzip
 #      - run:
 #          name: Record Existing Infrastructure ID
 #          command: |
