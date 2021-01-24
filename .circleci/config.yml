@@ -142,15 +142,15 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths: 
-            - project/.circleci/ansible/inventory.txt
+            - .circleci/ansible/inventory.txt
       - attach_workspace:
           at: ~/
       # check inventory
       - run: |
-          ls -l project/.circleci/ansible/inventory.txt
-          INVENTORY=$(cat project/.circleci/ansible/inventory.txt)
+          ls -l .circleci/ansible/inventory.txt
+          INVENTORY=$(cat .circleci/ansible/inventory.txt)
           echo $INVENTORY
-          cat project/.circleci/ansible/inventory.txt
+          cat .circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure
 
 workflows:
