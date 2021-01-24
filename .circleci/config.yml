@@ -140,11 +140,11 @@ jobs:
             ls -a
             cat ~/backendIP.txt >> .circleci/ansible/inventory.txt
       - persist_to_workspace:
-          root: ~/
+          root: .circleci/ansible/
           paths: 
-            - .circleci/ansible/inventory.txt
+            - inventory.txt
       - attach_workspace:
-          at: ~/
+          at: .circleci/ansible/
       # check inventory
       - run: |
           ls -l .circleci/ansible/inventory.txt
