@@ -144,7 +144,7 @@ jobs:
           paths: 
             - project/.circleci/ansible/inventory.txt
       - attach_workspace:
-          at: ~
+          at: ~/
       # check inventory
       - run: |
           ls -l project/.circleci/ansible/inventory.txt
