@@ -141,6 +141,7 @@ jobs:
       - run:
           name: Ensure frontend infrastructure exist
           command: |
+            exit 1 # deliberate error to check if destroy code is run
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --tags project=udapeople \
@@ -159,7 +160,7 @@ jobs:
 #          at: .circleci/ansible/
       # Rollback on failure
       - destroy-environment:
-          ID: "${CIRCLE_WORKFLOW_ID:0:7}"
+          ID: "${CIRCLE_WORKFLOW_ID:0:7}"   
 
 workflows:
   default:
