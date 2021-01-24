@@ -107,9 +107,9 @@ jobs:
       - run:
           name: Get Existing Infrastructure ID
           command: |
-          aws cloudformation \
-          list-exports --query "Exports[?Name==\`ID\`].Value" \
-          --no-paginate --output text
+            aws cloudformation \
+            list-exports --query "Exports[?Name==\`ID\`].Value" \
+            --no-paginate --output text
       - checkout
       - run:
           name: Ensure back-end infrastructure exists
