@@ -1,5 +1,19 @@
 version: 2.1
 
+commands:
+  destroy-environment:
+    description: Destroy backend and frontend cloudformation stacks given a workflow ID.
+    parameters:
+      ID:
+        type: string   
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            aws cloudformation delete-stack --stack-name backend-${ID}
+            aws cloudformation delete-stack --stack-name frontend-${ID}
+
 jobs:
   build-frontend:
     docker:
@@ -91,14 +105,14 @@ jobs:
             npm i
             npm audit fix --audit-level=critical --force
 
-  get-last-infrastructure-id:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - run: |
-          aws cloudformation \
-          list-exports --query "Exports[?Name==\`ID\`].Value" \
-          --no-paginate --output text
+  # get-last-infrastructure-id:
+  #   docker:
+  #     - image: amazon/aws-cli
+  #   steps:
+  #     - run: |
+  #         aws cloudformation \
+  #         list-exports --query "Exports[?Name==\`ID\`].Value" \
+  #         --no-paginate --output text
 
   deploy-infrastructure:
     docker:
@@ -135,23 +149,17 @@ jobs:
       - run:
           name: Add backend IP to ansible inventory
           command: |
-            pwd
-            ls -ld .
-            ls -a
             cat ~/backendIP.txt >> .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: .circleci/ansible/
           paths: 
             - inventory.txt
-      - attach_workspace:
-          at: .circleci/ansible/
-      # check inventory
-      - run: |
-          ls -l .circleci/ansible/inventory.txt
-          INVENTORY=$(cat .circleci/ansible/inventory.txt)
-          echo $INVENTORY
-          cat .circleci/ansible/inventory.txt
-      # Here's where you will add some code to rollback on failure
+      # to retrieve, use the following
+#      - attach_workspace:
+#          at: .circleci/ansible/
+      # Rollback on failure
+      - destroy-environment:
+          ID: "${CIRCLE_WORKFLOW_ID:0:7}"
 
 workflows:
   default:
