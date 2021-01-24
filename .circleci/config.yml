@@ -136,11 +136,12 @@ jobs:
           name: Add backend IP to ansible inventory
           command: |
             pwd
-            ls
-            exit 1
+            ls -ld .
+            ls -a
+            cat ~/backendIP.txt >> .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
-          paths:
+          paths: 
             - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure
 
