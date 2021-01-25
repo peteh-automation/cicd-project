@@ -166,11 +166,11 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - run:
-        name: Install dependencies
-        command: |
-          apk add tar gzip
-          apk add --update ansible
-          pip install awscli
+          name: Install dependencies
+          command: |
+            apk add tar gzip
+            apk add --update ansible
+            pip install awscli
       - checkout
       - add_ssh_keys:
           fingerprints: ["09:5b:41:c5:9c:e5:2d:67:8a:18:31:14:e8:c5:f6:d6"]
