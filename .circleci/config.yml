@@ -135,8 +135,6 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text > ~/backendIP.txt
-            ls -la ~
-            ls -la ~/project
       - persist_to_workspace:
           root: ~/
           paths: [backendIP.txt]
@@ -179,10 +177,7 @@ jobs:
       - run:
           name: Configure server
           command: |
-            pwd
-            ls -la
-            ansible-playbook -i ~/inventory.txt configure-server.yml
-            exit 1
+            ansible-playbook -i ~/inventory.txt .circleci/ansible/configure-server.yml
       # Rollback on failure
       - destroy-environment:
           ID: ${CIRCLE_WORKFLOW_ID:0:7}
