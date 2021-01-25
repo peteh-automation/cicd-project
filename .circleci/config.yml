@@ -182,6 +182,30 @@ jobs:
       - destroy-environment:
           ID: ${CIRCLE_WORKFLOW_ID:0:7}
 
+  run-migrations:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-build]
+      - run:
+          name: Run migrations
+          command: |
+            cd backend
+            npm i
+            npm run migrations # > migrations.log
+            exit 1
+            export migration_status=$(cat migration.log | grep -c "has been executed successfully")
+            echo $migration_status
+            exit 1
+      - run:
+          name: Send migration results to memstash
+          command: |
+            # Your code here
+            exit 1
+     # Here's where you will add some code to rollback on failure
+
 workflows:
   default:
     jobs:
@@ -199,3 +223,5 @@ workflows:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]

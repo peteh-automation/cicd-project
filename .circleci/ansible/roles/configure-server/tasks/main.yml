@@ -18,6 +18,3 @@
     global: yes
     production: yes
     state: present
-
-- name: "check env variables"
-  shell: env | grep TYPEORM
