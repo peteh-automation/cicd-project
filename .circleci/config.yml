@@ -167,6 +167,7 @@ jobs:
     steps:
       - run:
         name: Install dependencies
+        command: |
           apk add tar gzip
           apk add --update ansible
           pip install awscli
