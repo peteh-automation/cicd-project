@@ -205,6 +205,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - aws-cli/setup
       - restore_cache:
           keys: [backend-build]
       - run:
@@ -214,10 +215,6 @@ jobs:
             npm i
             npm run migrations > ~/migrations.log
             cat ~/migrations.log
-            exit 1
-            export migration_status=$(cat migration.log | grep -c "has been executed successfully")
-            echo $migration_status
-            exit 1
       - run:
           name: Send migration results to memstash
           command: |
