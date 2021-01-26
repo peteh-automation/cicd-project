@@ -205,7 +205,12 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - aws-cli/setup
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get -y update
+            sudo apt-get -y install awscli
+            sudo apt-get -y install curl
       - restore_cache:
           keys: [backend-build]
       - run:
