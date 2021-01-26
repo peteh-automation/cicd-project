@@ -237,13 +237,14 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: |
-            yum install -y tar gzip 
+            yum install -y tar gzip
+            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
             yum install -y nodejs
       - attach_workspace:
           at: ~/
@@ -253,6 +254,7 @@ jobs:
             BACKEND_IP=$(cat ~/backendIP.txt)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL is ${API_URL}"
+            echo API_URL="http://${BACKEND_IP}:3030" >> "frontend/.env"
       - run:
           name: Deploy frontend objects
           command: |
