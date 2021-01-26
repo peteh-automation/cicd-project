@@ -224,10 +224,10 @@ jobs:
           name: Send migration results to memstash
           command: |
             migration_status=$(cat ~/migrations.log | \
-              grep -c "has been executed successfully|No migrations are pending")
+              egrep -c "has been executed successfully|No migrations are pending")
             echo $migration_status
             curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" \
-              --request PUT 
+              --request PUT \
               --data $migration_status \
               https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
             exit 1
