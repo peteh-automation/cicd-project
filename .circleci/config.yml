@@ -64,16 +64,22 @@ jobs:
             npm i
             npm run build
             pwd
-            ls ~/project/backend
+            ls -l ~/project/backend/dist
       - persist_to_workspace:
-          root: ~/project/backend
-          paths: [dist]
+          root: ~/
+          paths: 
+            - project/backend/dist
+      - run: 
+          name: delete dist
+          command: |
+            rm -rf ~/project/backend/dist
+            ls -l ~/project/backend/dist
       - attach_workspace:
-          at: /tmp/restore
+          at: ~/
       - run: 
           name: check contents of workspace
           command: |
-            find /tmp/restore -type d
+            ls -l ~/project/backend/dist
             exit 1
       - save_cache:
           paths: [backend/node_modules]
