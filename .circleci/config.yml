@@ -63,9 +63,11 @@ jobs:
             cd backend
             npm i
             npm run build
+            pwd
+            ls
       - persist_to_workspace:
-          root: ~/
-          paths: [project/backend/dist]
+          root: ~/project/backend
+          paths: [dist]
       - attach_workspace:
           at: /tmp
       - run: 
