@@ -18,12 +18,12 @@
 - name: "Deploy the backend files"
   become_user: ubuntu
   unarchive:
-    src: ~/backend.tgz
-    dest: ~/
+    src: ~/backend_dist.tgz
+    dest: ~ubuntu/backend
 
 - name: "Start the backend service"
   become_user: ubuntu
   shell: |
-    cd ~/backend
+    cd ~ubuntu/backend
     npm i
     pm2 start npm --name backend -- start
