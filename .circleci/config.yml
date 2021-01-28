@@ -66,10 +66,12 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths: [project/backend/dist]
+      - attach_workspace:
+          at: /tmp
       - run: 
           name: check contents of workspace
           command: |
-            find ~ -type d
+            find /tmp -type d
             exit 1
       - save_cache:
           paths: [backend/node_modules]
