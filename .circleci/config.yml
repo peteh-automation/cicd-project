@@ -63,7 +63,8 @@ jobs:
             cd backend
             npm i
             npm run build
-            ls -R
+            find -type d
+            exit 1
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
