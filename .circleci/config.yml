@@ -63,8 +63,6 @@ jobs:
             cd backend
             npm i
             npm run build
-            pwd
-            ls -l ~/project/backend/dist
       - persist_to_workspace:
           root: ~/
           paths: 
@@ -94,20 +92,6 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build]
-      - run: 
-          name: delete dist
-          command: |
-            ls -l ~/project/backend
-            rm -rf ~/project/backend/dist
-            ls -l ~/project/backend
-      - attach_workspace:
-          at: ~/
-      - run: 
-          name: check contents of workspace
-          command: |
-            ls -l ~/project/backend
-            ls -l ~
-            exit 1
       - run:
           name: Test Backend
           command: |
@@ -142,15 +126,6 @@ jobs:
             cd backend
             npm i
             npm audit fix --audit-level=critical --force
-
-  # get-last-infrastructure-id:
-  #   docker:
-  #     - image: amazon/aws-cli
-  #   steps:
-  #     - run: |
-  #         aws cloudformation \
-  #         list-exports --query "Exports[?Name==\`ID\`].Value" \
-  #         --no-paginate --output text
 
   deploy-infrastructure:
     docker:
@@ -300,7 +275,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # your code here
+            apk add --update tar gzip ansible
+            pip install awscli
       - run:
           name: Package backend code and Deploy
           command: |
@@ -331,4 +307,6 @@ workflows:
       - run-migrations:
           requires: [configure-infrastructure]
       - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
           requires: [run-migrations]
