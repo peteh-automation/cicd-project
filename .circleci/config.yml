@@ -63,6 +63,7 @@ jobs:
             cd backend
             npm i
             npm run build
+            ls -R
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
@@ -261,9 +262,31 @@ jobs:
       - run:
           name: Deploy frontend objects
           command: |
-            pwd
             cd frontend
             aws s3 cp ./dist "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
+      # Rollback on failure
+      - destroy-environment:
+          ID: ${CIRCLE_WORKFLOW_ID:0:7}
+      - revert-migrations
+
+  deploy-backend:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["09:5b:41:c5:9c:e5:2d:67:8a:18:31:14:e8:c5:f6:d6"]
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+      - run:
+          name: Deploy backend
+          command: |
+            cd backend
+            tar cvzf backend.tar.gz backend
       # Rollback on failure
       - destroy-environment:
           ID: ${CIRCLE_WORKFLOW_ID:0:7}
