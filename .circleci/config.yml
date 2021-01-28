@@ -73,7 +73,7 @@ jobs:
           name: delete dist
           command: |
             rm -rf ~/project/backend/dist
-            ls -l ~/project/backend/dist
+            ls -l ~/project/backend
       - attach_workspace:
           at: ~/
       - run: 
