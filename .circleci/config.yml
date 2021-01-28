@@ -282,6 +282,7 @@ jobs:
           command: |
             cd backend
             tar cvzf backend_dist.tgz dist
+            ansible-playbook -i ~/inventory.txt .circleci/ansible/deploy-backend.yml
       # Rollback on failure
       - destroy-environment:
           ID: ${CIRCLE_WORKFLOW_ID:0:7}
