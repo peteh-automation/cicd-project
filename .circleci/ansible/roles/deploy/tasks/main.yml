@@ -18,8 +18,8 @@
 - name: "Deploy the backend files"
   become_user: ubuntu
   unarchive:
-    src: ~/project/backend_dist.tgz
-    dest: ~ubuntu/backend
+    src: ~/backend_dist.tgz
+    dest: ~ubuntu/
 
 - name: "Start the backend service"
   become_user: ubuntu

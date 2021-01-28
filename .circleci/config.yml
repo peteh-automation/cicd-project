@@ -281,9 +281,7 @@ jobs:
       - run:
           name: Package backend code and Deploy
           command: |
-            cd backend
-            tar cvzf backend_dist.tgz dist
-            cd ..
+            tar cvzf ~/backend_dist.tgz backend/dist
             ansible-playbook -i ~/inventory.txt .circleci/ansible/deploy-backend.yml
       # Rollback on failure
       - destroy-environment:
