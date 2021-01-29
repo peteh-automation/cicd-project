@@ -302,7 +302,7 @@ jobs:
     docker:
       - image: python:3.7-alpine3.11
     steps:
-      # Checkout code from git - is this necessary?
+      - checkout
       - run:
           name: Install dependencies
           command: |
@@ -330,6 +330,10 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            yum install -y nodejs
       - run:
           name: Update cloudfront distribution
           command: |
