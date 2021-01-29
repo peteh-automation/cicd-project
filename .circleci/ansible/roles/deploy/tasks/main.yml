@@ -24,6 +24,6 @@
 - name: "Start the backend service"
   become_user: ubuntu
   shell: |
-    cd ~ubuntu
+    cd ~ubuntu/backend
     npm i
     pm2 start npm --name backend -- start
