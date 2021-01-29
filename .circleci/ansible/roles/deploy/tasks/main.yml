@@ -1,19 +1,19 @@
 ---
 
-- name: "Install Ansible dependencies"
-  become: true
-  apt:
-    name: ["nodejs", "tar", "gzip"]
-    state: latest
-    update_cache: yes
+# - name: "Install Ansible dependencies"
+#   become: true
+#   apt:
+#     name: ["tar", "gzip"]
+#     state: latest
+#     update_cache: yes
 
-- name: "Install pm2"
-  become: true
-  npm:
-    name: pm2
-    global: yes
-    production: yes
-    state: present
+# - name: "Install pm2"
+#   become: true
+#   npm:
+#     name: pm2
+#     global: yes
+#     production: yes
+#     state: present
 
 - name: "Deploy the backend files"
   become_user: ubuntu
