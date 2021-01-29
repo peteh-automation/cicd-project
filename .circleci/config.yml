@@ -250,7 +250,7 @@ jobs:
             BACKEND_IP=$(cat ~/backendIP.txt)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL is ${API_URL}"
-            # echo API_URL="http://${BACKEND_IP}:3030" >> "frontend/.env"
+            echo API_URL="http://${BACKEND_IP}:3030" >> "frontend/.env"
             cd frontend
             npm install
             npm run build
