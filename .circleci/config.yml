@@ -291,7 +291,7 @@ jobs:
             echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
             echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"          
-            tar cvzf ~/backend_dist.tgz backend/dist
+            tar cvzf ~/backend.tgz backend
             ansible-playbook -i ~/inventory.txt .circleci/ansible/deploy-backend.yml
       # Rollback on failure
       - destroy-environment:
