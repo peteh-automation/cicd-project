@@ -22,7 +22,7 @@ commands:
           name: Migration Rollback
           when: on_fail
           command: |
-            SUCCESS=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" \
+            SUCCESS=$(curl -s -H "token: ${CIRCLE_WORKFLOW_ID}" \
             --request GET https://api.memstash.io/values/migration-${CIRCLE_WORKFLOW_ID})
             # migration status value 
             echo $SUCCESS
@@ -222,7 +222,7 @@ jobs:
             migration_status=$(cat ~/migrations.log | \
               egrep -c "has been executed successfully|No migrations are pending")
             echo $migration_status
-            curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" \
+            curl -s -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" \
               --request PUT \
               --data $migration_status \
               https://api.memstash.io/values/migration-${CIRCLE_WORKFLOW_ID}
@@ -349,9 +349,9 @@ jobs:
             newWorkflowID=$(aws cloudformation list-exports \
               --query "Exports[?Name==\`WorkflowID\`].Value" \
               --no-paginate --output text)
-            echo "WorkflowID was $oldWorkflowID"
-            echo "WorkflowID now $newWorkflowID"
-            curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" \
+            echo "WorkflowID was ${oldWorkflowID}"
+            echo "WorkflowID now ${newWorkflowID}"
+            curl -s -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" \
               --request PUT \
               --data $oldWorkflowID \
               https://api.memstash.io/values/workflowID-${CIRCLE_WORKFLOW_ID}
@@ -364,22 +364,15 @@ jobs:
       docker:
         - image: amazon/aws-cli
       steps:
-        - checkout
         - run:
             name: Delete old front/back end stacks
             command: |
-              oldWorkflowID=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" \
+              oldWorkflowID=$(curl -s -H "token: ${CIRCLE_WORKFLOW_ID}" \
                 --request GET https://api.memstash.io/values/workflowID-${CIRCLE_WORKFLOW_ID})
-              echo "old workflowID was $oldWorkflowID"
-              # STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
-              #     --stack-status-filter CREATE_COMPLETE --no-paginate --output text)
-              # for stack in ${STACKS[@]}; do
-              #   if [ $(echo $stack | \
-              #        egrep "udapeople-(front|back)end-" | \
-              #        grep -cv "${CIRCLE_WORKFLOW_ID:0:7}) -eq 1 ]; then
-              #     echo "delete $stack"
-              #   fi
-              # done
+              echo "old workflowID was ${oldWorkflowID}"
+              aws s3 rb s3://udapeople-${oldWorkflowID} --force
+              aws cloudformation delete-stack --stack-name udapeople-backend-${oldWorkflowID}
+              aws cloudformation delete-stack --stack-name udapeople-frontend-${oldWorkflowID}
 
 workflows:
   default:
