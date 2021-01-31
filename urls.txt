@@ -1,5 +1,5 @@
 URL01: https://github.com/peteh-automation/cicd-project
-URL02: http://udapeople-becf77f.s3-website.eu-west-2.amazonaws.com/
+URL02: http://udapeople-8fb57f5.s3-website.eu-west-2.amazonaws.com/
 URL03: http://dvl6vrlyaxd6n.cloudfront.net
-URL04: http://ec2-18-133-79-217.eu-west-2.compute.amazonaws.com:3030/api/status
+URL04: http://ec2-18-132-60-114.eu-west-2.compute.amazonaws.com:3030/api/status
 URL05: http://ec2-18-134-136-31.eu-west-2.compute.amazonaws.com:9090/
